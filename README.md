@@ -1,11 +1,11 @@
 # Desafio Analytics Engineer — Klubi
 
-Este repositório contém a resolução do desafio técnico para a vaga de Analytics Engineer (Estágio) na Klubi. O projeto analisa os hábitos e o desempenho escolar de 1.000 alunos.
+Este repositório documenta a resolução do desafio técnico para a vaga de Analytics Engineer (Estágio) na Klubi. O objetivo principal deste projeto é explorar, tratar e analisar uma base de dados que mapeia os hábitos e o desempenho acadêmico de 1.000 alunos, visando extrair padrões de comportamento e insights acionáveis.
 
-## 🚀 Como Rodar o Projeto
+## 🚀 Como Executar o Projeto
 
 1. **Pré-requisitos:** Python 3.8+ e `pip`.
-2. **Crie um ambiente virtual (opcional, mas recomendado):**
+2. **Crie e ative um ambiente virtual (opcional, mas recomendado):**
    ```bash
    python -m venv .venv
    source .venv/bin/activate  # no Linux/Mac
@@ -14,44 +14,34 @@ Este repositório contém a resolução do desafio técnico para a vaga de Analy
    ```bash
    pip install pandas matplotlib seaborn numpy
    ```
-4. **Execute a pipeline principal:**
+4. **Execute a pipeline completa:**
    ```bash
    python analise_completa.py
    ```
 
-A pipeline atual está dividida nas seguintes tarefas e irá gerar, como saída, logs no console e um novo arquivo de dados limpos (`dados_transformados.csv`). 
+A pipeline automatizada realizará todas as etapas desde a exploração inicial até as análises estatísticas mais avançadas.
 
 ---
 
-## 📋 Resumo das Etapas Executadas e Respostas
+## 📖 Relatório de Análise e Desenvolvimento
 
-O código que resolve as tarefas abaixo está centralizado no script principal `analise_completa.py`.
+O desenvolvimento da solução seguiu um fluxo natural de tratamento de dados e geração de insights estatísticos.
 
-### Tarefa 1: Exploração Inicial
+### 1. Exploração e Qualidade dos Dados
+O ponto de partida do projeto consistiu em mapear o cenário dos dados fornecidos. A base contempla 1.000 registros sem nenhuma linha duplicada, distribuídos entre 16 variáveis. Estas variam desde características demográficas (idade, gênero e nível de escolaridade dos pais) até hábitos diários (horas dedicadas a estudos, lazer e exercícios), culminando no nosso alvo preditivo: a nota final do aluno (`exam_score`).
 
-**Pergunta:** *Importar e descrever a base (tipos, distribuição, valores ausentes). Diagnóstico de qualidade dos dados.*
+Uma auditoria da qualidade revelou um dataset bem íntegro: os valores mantinham coerência semântica e não exibiam falhas extremas como horas diárias negativas. A única exceção foi a variável que indica a escolaridade dos pais (`parental_education_level`), que possuía cerca de 9,1% de valores ausentes (91 registros). 
 
-**Nossas Conclusões:**
-* **Dimensão:** A base contém 1.000 alunos e 16 variáveis.
-* **Tipos de Dados:** Foram identificadas 9 variáveis numéricas (como `age`, `study_hours_per_day`, `exam_score`) e 7 categóricas (como `gender`, `diet_quality`, `parental_education_level`).
-* **Diagnóstico de Qualidade (Valores Ausentes e Inconsistências):** 
-  * A base apresentou excelente consistência em quase todos os atributos. Não foram identificadas linhas duplicadas, registros com percentuais fora de 0-100% ou idades/horas diárias irreais. 
-  * A **única inconsistência** (ausência de dados) foi detectada na coluna `parental_education_level`, com exatos 91 valores ausentes (9.1% da base).
+### 2. Transformação e Engenharia de Variáveis
+Para tratar os nulos na coluna sobre a escolaridade parental, e considerando se tratar de uma categoria ordinal de baixo impacto nulo, optou-se pela imputação através da **moda** (categoria *"High School"*). O método foi preferido em relação à criação de uma categoria "Desconhecida", pois protege o dataset contra ruídos prematuros, mantendo a integridade distributiva original. Uma rápida verificação confirmou a validade da técnica: a média de nota geral entre o grupo íntegro (69.6) e o que continha falhas (70.0) se mostrou quase idêntica, descartando ausências com viés comportamental oculto.
 
-### Tarefa 2: Engenharia de Dados
+Com os dados consistentes, avançamos para a criação de variáveis derivadas para facilitar análises dimensionais. A métrica de `horas_distracao` (somatório de tempo em redes sociais e Netflix) foi elaborada junto da `razao_estudo_distracao`. Esta razão serve como um excelente KPI: quantifica de imediato a dominância dos estudos ou do lazer no cotidiano de cada aluno. A conversão de atributos categóricos literais (como `diet_quality` ou `internet_quality`) em correspondentes ordinais e a divisão temporal em bandas (High, Medium, Low) formaram a preparação final do conjunto, hoje estruturado para interpretações matemáticas diretas.
 
-**Pergunta:** *Criar variáveis derivadas se fizer sentido. Explicar como tratou dados ausentes ou inconsistentes.*
+### 3. Análises Estatísticas e Fatores de Influência
+Superado o polimento dos dados, submetemos a amostra ampliada a um cálculo de correlação de Pearson. O resultado esclareceu matematicamente as dinâmicas de dedicação estudantil e como elas de fato se interligam ao sucesso nas avaliações.
 
-**Nossas Conclusões e Decisões:**
-* **Tratamento de Ausentes:** Para lidar com os 91 valores nulos em `parental_education_level` (variável categórica ordinal), optei pela **imputação pela moda** (preenchendo os nulos com a categoria *"High School"*). 
-  * *Justificativa:* Por ser apenas 9.1% do total e uma variável ordinal com poucas classes, imputar com a classe mais frequente evita a criação de ruído adicional nos dados (ex: uma categoria 'Desconhecido'), e manteve a distribuição original da amostra. A análise das médias das notas entre o grupo que possuía esse dado e o grupo nulo indicou uma ausência aleatória (diferença de apenas 0.5 na nota média).
-* **Criação de Variáveis Derivadas:** Para enriquecer a base para os modelos e insights futuros, criei:
-  1. `horas_distracao`: A soma de `social_media_hours` e `netflix_hours`.
-  2. `razao_estudo_distracao`: A divisão entre as horas de estudo e as horas de distração. É um ótimo termômetro: valores > 1 indicam alunos que estudam mais do que se distraem.
-  3. `faixa_redes_sociais`: Divisão da carga em redes sociais em percentis (Low, Medium, High).
-  4. `faixa_desempenho`: Divisão categórica do `exam_score` (Baixo, Médio, Alto).
-  5. **Codificação Ordinal:** Converteu atributos como `diet_quality` (Poor, Fair, Good) em inteiros (1, 2, 3), preparando o terreno para matrizes de correlação e ML.
+O **maior impulsionador de sucesso** de longe reside no compromisso linear com o estudo. A variável `study_hours_per_day` apresenta uma fortíssima correlação positiva (**+0.825**) com a nota. Complementando isso, a nossa métrica recém-criada, `razao_estudo_distracao`, despontou como a segunda força de maior impacto (**+0.425**), mostrando que além de acumular horas brutas de livro, blindar esse tempo perante o ócio impulsiona notas altas. O terceiro fator de impacto é a estabilidade mental (`mental_health_rating`, em **+0.322**), atestando a importância do bem-estar.
 
----
-*Nota: As Tarefas 3 (Análise Estatística), 4 (Aplicações), 5 (Visualização) e 6 (Síntese) serão adicionadas a este documento à medida que a análise avança!*
+No lado inverso, o tempo cedido às distrações constitui o **maior dreno de pontuação**. A consolidação total de tempo em tela recém gerada por nossa engenharia (`horas_distracao`) figura como a correlação de base mais negativa (**-0.238**). Se o analisarmos fracionado, o streaming de vídeo (`netflix_hours`, com **-0.172**) e as redes sociais (`social_media_hours`, com **-0.167**) punem o rendimento escolar de forma praticamente equiparável.
 
+*Nota: As Tarefas 4, 5 e 6 serão executadas nas próximas iterações do desenvolvimento e unificadas nesta mesma rotina documental.*
