@@ -54,3 +54,4 @@ O código que resolve as tarefas abaixo está centralizado no script principal `
 
 ---
 *Nota: As Tarefas 3 (Análise Estatística), 4 (Aplicações), 5 (Visualização) e 6 (Síntese) serão adicionadas a este documento à medida que a análise avança!*
+
