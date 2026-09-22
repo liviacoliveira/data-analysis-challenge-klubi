@@ -1,0 +1,17 @@
+# Ambientes virtuais
+.venv/
+venv/
+env/
+
+# Python cache e artefatos
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Outputs e dados gerados
+outputs/
+dados_transformados.csv
+
+# Outros
+.DS_Store
