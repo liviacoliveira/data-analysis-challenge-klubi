@@ -72,6 +72,7 @@ def tarefa_2_engenharia(df):
         moda = df_transformed[col_nula].mode()[0]
         df_transformed[col_nula] = df_transformed[col_nula].fillna(moda)
         print(f"✅ Preenchidos nulos de '{col_nula}' com a moda: '{moda}'")
+        print("   (Justificativa: Variável ordinal com baixa % de nulos [9.1%]. A moda preserva a distribuição sem ruído extra.)")
 
     # 2.2 Criação de variáveis derivadas
     print("\n── Criação de Variáveis Derivadas ──")
@@ -83,13 +84,17 @@ def tarefa_2_engenharia(df):
         bins=[-np.inf, q33, q66, np.inf],
         labels=["Low", "Medium", "High"]
     )
+    print("📌 Criada: faixa_redes_sociais (Low, Medium, High)")
 
+    # b) Horas totais de distração (redes sociais + netflix)
     # b) Horas totais de distração
     df_transformed["horas_distracao"] = df_transformed["social_media_hours"] + df_transformed["netflix_hours"]
+    print("📌 Criada: horas_distracao")
 
     # c) Razão Estudo/Distração
     df_transformed["razao_estudo_distracao"] = df_transformed["study_hours_per_day"] / df_transformed["horas_distracao"].replace(0, np.nan)
     df_transformed["razao_estudo_distracao"] = df_transformed["razao_estudo_distracao"].fillna(0)
+    print("📌 Criada: razao_estudo_distracao (horas estudo ÷ horas distração)")
 
     # d) Faixa Desempenho
     df_transformed["faixa_desempenho"] = pd.cut(
@@ -97,6 +102,7 @@ def tarefa_2_engenharia(df):
         bins=[-np.inf, 50, 75, np.inf],
         labels=["Baixo", "Médio", "Alto"]
     )
+    print("📌 Criada: faixa_desempenho (Baixo <50, Médio 50-75, Alto >75)")
 
     # e) Classificação Ordinal
     mapa_dieta = {"Poor": 1, "Fair": 2, "Good": 3}
@@ -106,6 +112,7 @@ def tarefa_2_engenharia(df):
     df_transformed["diet_quality_cod"] = df_transformed["diet_quality"].map(mapa_dieta)
     df_transformed["internet_quality_cod"] = df_transformed["internet_quality"].map(mapa_internet)
     df_transformed["parental_education_level_cod"] = df_transformed["parental_education_level"].map(mapa_pais)
+    print("📌 Criadas: variáveis ordinais codificadas para (dieta, internet, escolaridade pais)")
     
     print("📌 Variáveis derivadas criadas: faixa_redes_sociais, horas_distracao, razao_estudo_distracao, faixa_desempenho, e ordinais codificadas.")
 
@@ -178,16 +185,21 @@ def main():
         
     df_raw = pd.read_csv(file_path)
     
+    # Executar Tarefa 1
     # Executar Tarefas Sequencialmente
     tarefa_1_exploracao(df_raw)
     
+    # Executar Tarefa 2
     df_limpo = tarefa_2_engenharia(df_raw)
     
+    # As Tarefas 3, 4, 5 e 6 serão adicionadas nas próximas etapas!
     tarefa_3_estatistica(df_limpo)
     
     print("\n" + "="*70)
+    print("🚀 Pipeline executado com sucesso até a Tarefa 2!")
     print("🚀 Pipeline executado com sucesso até a Tarefa 3!")
     print("="*70 + "\n")
 
 if __name__ == "__main__":
     main()
+

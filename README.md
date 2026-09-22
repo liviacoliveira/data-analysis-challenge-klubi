@@ -23,7 +23,7 @@ A pipeline automatizada realizará todas as etapas desde a exploração inicial 
 
 ---
 
-## 📖 Relatório de Análise e Desenvolvimento
+##  Relatório de Análise e Desenvolvimento
 
 O desenvolvimento da solução seguiu um fluxo natural de tratamento de dados e geração de insights estatísticos.
 
