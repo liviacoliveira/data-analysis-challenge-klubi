@@ -9,8 +9,7 @@ __pycache__/
 *.pyo
 *.pyd
 
-# Outputs e dados gerados
-outputs/
+# Dados gerados
 dados_transformados.csv
 
 # Outros

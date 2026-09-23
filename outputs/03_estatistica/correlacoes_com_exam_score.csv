@@ -1,0 +1,16 @@
+,correlacao
+study_hours_per_day,0.825
+razao_estudo_distracao,0.425
+mental_health_rating,0.322
+exercise_frequency,0.16
+sleep_hours,0.122
+attendance_percentage,0.09
+diet_quality_cod,0.015
+extracurricular_participation_bin,0.001
+age,-0.009
+parental_education_level_cod,-0.022
+part_time_job_bin,-0.027
+internet_quality_cod,-0.036
+social_media_hours,-0.167
+netflix_hours,-0.172
+horas_distracao,-0.238

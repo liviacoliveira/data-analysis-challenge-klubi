@@ -1,0 +1,5 @@
+cluster,perfil,study_hours_per_day,horas_distracao,sleep_hours,mental_health_rating,exam_score,n_alunos
+2,🟢 Alto Desempenho,4.53,5.42,6.13,7.73,80.15,241
+3,🔵 Equilibrado,2.86,3.0,6.55,7.51,70.42,259
+0,🟡 Atenção,3.93,3.91,5.84,2.75,67.62,302
+1,🔴 Risco,2.68,5.36,7.74,4.04,58.71,198
