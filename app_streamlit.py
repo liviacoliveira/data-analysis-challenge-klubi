@@ -101,7 +101,7 @@ if nota_prevista < 50:
 elif nota_prevista < 75:
     st.info("ℹPerfil intermediário — há espaço para ganhos ajustando estudo/distração.")
 else:
-    st.success("Perfil de alto desempenho.")
+    st.success(" Perfil de alto desempenho.")
 
 st.divider()
 st.subheader("Onde esse aluno simulado está em relação à base")

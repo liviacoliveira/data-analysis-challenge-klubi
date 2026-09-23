@@ -93,7 +93,7 @@ Isolando o efeito de cada hábito (a favor de manter os demais fixos), estudo co
 
 **C. (Diferencial) Simulador interativo (`app_streamlit.py`).** App em Streamlit que usa o mesmo modelo preditivo: o usuário ajusta os hábitos com sliders e vê, em tempo real, a nota esperada e onde esse aluno hipotético se posiciona em relação à distribuição dos 1.000 alunos da base. Pensado para uma conversa de orientação (`"e se você dormisse mais 1h e reduzisse redes sociais?"`) em vez de uma tabela estática.
 
-🔗 **App publicado:** [preencher com o link do Streamlit Community Cloud depois do deploy]
+🔗 **App publicado:** https://data-analysis-challenge-klubi-gifnoquxeiu9rk8uxhrhdc.streamlit.app/
 
 ### 5. Visualização
 
