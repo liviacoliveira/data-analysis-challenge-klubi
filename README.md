@@ -65,7 +65,7 @@ No lado inverso, o tempo cedido às distrações constitui o **maior dreno de po
 
 Duas aplicações concretas foram construídas em cima da análise, cada uma apoiando uma decisão diferente:
 
-**A. Modelo preditivo (Regressão Linear).** Treinado sobre os hábitos do aluno (estudo, redes sociais, Netflix, sono, exercício, frequência, saúde mental, dieta, internet, escolaridade dos pais) para estimar `exam_score`, com desempenho de **R² = [preencher] / MAE = [preencher] pontos** no conjunto de teste (valores impressos ao rodar `analise_completa.py`). Os coeficientes mostram o peso de cada hábito, mantendo os demais constantes:
+**A. Modelo preditivo (Regressão Linear).** Treinado sobre os hábitos do aluno (estudo, redes sociais, Netflix, sono, exercício, frequência, saúde mental, dieta, internet, escolaridade dos pais) para estimar `exam_score`, com desempenho de **R² = 0.900 / MAE = 4.11 pontos** no conjunto de teste (valores impressos ao rodar `analise_completa.py`). Os coeficientes mostram o peso de cada hábito, mantendo os demais constantes:
 
 | Hábito | Coeficiente | Leitura |
 |---|---|---|

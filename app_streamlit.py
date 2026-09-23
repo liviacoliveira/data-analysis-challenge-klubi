@@ -97,11 +97,11 @@ c1.metric("Nota prevista", f"{nota_prevista:.1f}", delta=f"{nota_prevista - medi
 c2.metric("Média da base (1.000 alunos)", f"{media_base:.1f}")
 
 if nota_prevista < 50:
-    st.warning("⚠️ Perfil de risco — combinação de hábitos associada a notas abaixo de 50.")
+    st.warning("Perfil de risco — combinação de hábitos associada a notas abaixo de 50.")
 elif nota_prevista < 75:
-    st.info("ℹ️ Perfil intermediário — há espaço para ganhos ajustando estudo/distração.")
+    st.info("ℹPerfil intermediário — há espaço para ganhos ajustando estudo/distração.")
 else:
-    st.success("✅ Perfil de alto desempenho.")
+    st.success("Perfil de alto desempenho.")
 
 st.divider()
 st.subheader("Onde esse aluno simulado está em relação à base")

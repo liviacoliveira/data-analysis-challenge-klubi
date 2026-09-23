@@ -34,7 +34,7 @@ def tarefa_1_exploracao(df):
     out_dir = "outputs/01_exploracao"
     os.makedirs(out_dir, exist_ok=True)
 
-    print(f"\n📐 Dimensões originais: {df.shape[0]} linhas × {df.shape[1]} colunas")
+    print(f"\nDimensões originais: {df.shape[0]} linhas × {df.shape[1]} colunas")
 
     print("\n── Tipos de Dados ──")
     numericas = df.select_dtypes(include="number").columns.tolist()
@@ -46,10 +46,10 @@ def tarefa_1_exploracao(df):
     nulos = df.isnull().sum()
     nulos = nulos[nulos > 0]
     if nulos.empty:
-        print("✅ Nenhum valor ausente encontrado!")
+        print("Nenhum valor ausente encontrado!")
     else:
         for col, count in nulos.items():
-            print(f"⚠️ {col}: {count} nulos ({count/len(df)*100:.1f}%)")
+            print(f"{col}: {count} nulos ({count/len(df)*100:.1f}%)")
 
     print("\n── Verificações de Consistência ──")
     dup = df.duplicated().sum()
@@ -69,12 +69,12 @@ def tarefa_1_exploracao(df):
     for col, (lo, hi) in checagens.items():
         if col in df.columns:
             fora = df[(df[col] < lo) | (df[col] > hi)]
-            status = "✅ ok" if fora.empty else f"⚠️ {len(fora)} valores fora de [{lo}, {hi}]"
+            status = "ok" if fora.empty else f"⚠️ {len(fora)} valores fora de [{lo}, {hi}]"
             print(f"{col}: {status}")
 
     # Resumo estatístico salvo como CSV (útil para o README / apêndice)
     df.describe(include="all").to_csv(f"{out_dir}/resumo_estatistico.csv")
-    print(f"\n✅ Resumo estatístico salvo em: {out_dir}/resumo_estatistico.csv")
+    print(f"\nResumo estatístico salvo em: {out_dir}/resumo_estatistico.csv")
 
     return df
 
@@ -97,7 +97,7 @@ def tarefa_2_engenharia(df):
     if df_transformed[col_nula].isnull().any():
         moda = df_transformed[col_nula].mode()[0]
         df_transformed[col_nula] = df_transformed[col_nula].fillna(moda)
-        print(f"✅ Preenchidos nulos de '{col_nula}' com a moda: '{moda}'")
+        print(f"Preenchidos nulos de '{col_nula}' com a moda: '{moda}'")
         print("   (Justificativa: Variável ordinal com baixa % de nulos [9.1%]. A moda preserva a distribuição sem ruído extra.)")
 
     # 2.2 Criação de variáveis derivadas
@@ -110,16 +110,16 @@ def tarefa_2_engenharia(df):
         bins=[-np.inf, q33, q66, np.inf],
         labels=["Low", "Medium", "High"]
     )
-    print("📌 Criada: faixa_redes_sociais (Low, Medium, High)")
+    print("Criada: faixa_redes_sociais (Low, Medium, High)")
 
     # b) Horas totais de distração (redes sociais + netflix)
     df_transformed["horas_distracao"] = df_transformed["social_media_hours"] + df_transformed["netflix_hours"]
-    print("📌 Criada: horas_distracao")
+    print("Criada: horas_distracao")
 
     # c) Razão Estudo/Distração
     df_transformed["razao_estudo_distracao"] = df_transformed["study_hours_per_day"] / df_transformed["horas_distracao"].replace(0, np.nan)
     df_transformed["razao_estudo_distracao"] = df_transformed["razao_estudo_distracao"].fillna(0)
-    print("📌 Criada: razao_estudo_distracao (horas estudo ÷ horas distração)")
+    print("Criada: razao_estudo_distracao (horas estudo ÷ horas distração)")
 
     # d) Faixa Desempenho
     df_transformed["faixa_desempenho"] = pd.cut(
@@ -127,7 +127,7 @@ def tarefa_2_engenharia(df):
         bins=[-np.inf, 50, 75, np.inf],
         labels=["Baixo", "Médio", "Alto"]
     )
-    print("📌 Criada: faixa_desempenho (Baixo <50, Médio 50-75, Alto >75)")
+    print("Criada: faixa_desempenho (Baixo <50, Médio 50-75, Alto >75)")
 
     # e) Classificação Ordinal
     mapa_dieta = {"Poor": 1, "Fair": 2, "Good": 3}
@@ -137,20 +137,20 @@ def tarefa_2_engenharia(df):
     df_transformed["diet_quality_cod"] = df_transformed["diet_quality"].map(mapa_dieta)
     df_transformed["internet_quality_cod"] = df_transformed["internet_quality"].map(mapa_internet)
     df_transformed["parental_education_level_cod"] = df_transformed["parental_education_level"].map(mapa_pais)
-    print("📌 Criadas: variáveis ordinais codificadas para (dieta, internet, escolaridade pais)")
+    print("Criadas: variáveis ordinais codificadas para (dieta, internet, escolaridade pais)")
 
     # f) Binárias (0/1) para variáveis Sim/Não — úteis para modelo e correlação
     for col in ["part_time_job", "extracurricular_participation"]:
         if col in df_transformed.columns:
             df_transformed[f"{col}_bin"] = df_transformed[col].map({"Yes": 1, "No": 0})
-    print("📌 Criadas: versões binárias (0/1) de part_time_job e extracurricular_participation")
+    print("Criadas: versões binárias (0/1) de part_time_job e extracurricular_participation")
 
-    print("📌 Variáveis derivadas criadas: faixa_redes_sociais, horas_distracao, razao_estudo_distracao, faixa_desempenho, ordinais codificadas e binárias.")
+    print("Variáveis derivadas criadas: faixa_redes_sociais, horas_distracao, razao_estudo_distracao, faixa_desempenho, ordinais codificadas e binárias.")
 
     # Salvar dataset limpo
     output_csv = "dados_transformados.csv"
     df_transformed.to_csv(output_csv, index=False)
-    print(f"\n✅ Dataset transformado salvo como '{output_csv}' ({df_transformed.shape[1]} colunas)")
+    print(f"\nDataset transformado salvo como '{output_csv}' ({df_transformed.shape[1]} colunas)")
 
     return df_transformed
 
@@ -182,11 +182,11 @@ def tarefa_3_estatistica(df):
 
     print("\n── Maiores Influências Positivas ──")
     for col, val in infl_positiva.items():
-        print(f"✔️ {col:.<30} {val:+.3f}")
+        print(f"{col:.<30} {val:+.3f}")
 
     print("\n── Maiores Influências Negativas ──")
     for col, val in infl_negativa.items():
-        print(f"❌ {col:.<30} {val:+.3f}")
+        print(f"{col:.<30} {val:+.3f}")
 
     # 3.4 Gerar Heatmap
     plt.figure(figsize=(14, 12))
@@ -198,7 +198,7 @@ def tarefa_3_estatistica(df):
     plt.savefig(heatmap_path)
     plt.close()
 
-    print(f"\n✅ Mapa de calor salvo em: {heatmap_path}")
+    print(f"\n Mapa de calor salvo em: {heatmap_path}")
 
     corr_com_nota.round(3).to_csv(f"{out_dir}/correlacoes_com_exam_score.csv", header=["correlacao"])
 
@@ -258,8 +258,8 @@ def tarefa_4_aplicacoes(df):
     plt.savefig(f"{out_dir}/modelo_real_vs_previsto.png")
     plt.close()
 
-    print(f"\n✅ Gráfico real vs. previsto salvo em: {out_dir}/modelo_real_vs_previsto.png")
-    print("\n📝 Decisão que apoia: um orientador acadêmico ou o time de monitoria pode aplicar")
+    print(f"\n Gráfico real vs. previsto salvo em: {out_dir}/modelo_real_vs_previsto.png")
+    print("\n Decisão que apoia: um orientador acadêmico ou o time de monitoria pode aplicar")
     print("   este modelo a um formulário de hábitos preenchido por um aluno novo (ou no início")
     print("   do semestre) para estimar sua faixa de desempenho esperada e priorizar quem deve")
     print("   receber apoio (tutoria, ajuste de rotina de estudo) antes que a nota caia de fato.")
@@ -304,8 +304,8 @@ def tarefa_4_aplicacoes(df):
     plt.savefig(f"{out_dir}/segmentacao_clusters.png")
     plt.close()
 
-    print(f"\n✅ Gráfico de segmentação salvo em: {out_dir}/segmentacao_clusters.png")
-    print("\n📝 Decisão que apoia: o time pedagógico/CX da Klubi pode usar os perfis para")
+    print(f"\n Gráfico de segmentação salvo em: {out_dir}/segmentacao_clusters.png")
+    print("\n Decisão que apoia: o time pedagógico/CX da Klubi pode usar os perfis para")
     print("   direcionar ações diferentes por grupo — ex.: campanhas de bem-estar e gestão de")
     print("   tempo de tela para o perfil 'Risco', grupos de estudo em par para 'Equilíbrio',")
     print("   e reconhecimento/mentoria de pares para 'Alto Desempenho' — em vez de uma")
@@ -333,7 +333,7 @@ def tarefa_5_visualizacao(df, corr_com_nota):
     plt.tight_layout()
     plt.savefig(f"{out_dir}/impacto_{top_var}.png")
     plt.close()
-    print(f"✅ Análise detalhada de '{top_var}' salva em: {out_dir}/impacto_{top_var}.png")
+    print(f" Análise detalhada de '{top_var}' salva em: {out_dir}/impacto_{top_var}.png")
 
     # Gráfico 3 (do desafio): comparação por faixas — boxplot
     plt.figure(figsize=(8, 6))
@@ -345,7 +345,7 @@ def tarefa_5_visualizacao(df, corr_com_nota):
     plt.tight_layout()
     plt.savefig(f"{out_dir}/boxplot_faixa_redes_sociais.png")
     plt.close()
-    print(f"✅ Boxplot por faixa de redes sociais salvo em: {out_dir}/boxplot_faixa_redes_sociais.png")
+    print(f" Boxplot por faixa de redes sociais salvo em: {out_dir}/boxplot_faixa_redes_sociais.png")
 
     # Extra 1: comparação por gênero (diferencial pedido na Tarefa 6)
     if "gender" in df.columns:
@@ -355,7 +355,7 @@ def tarefa_5_visualizacao(df, corr_com_nota):
         plt.tight_layout()
         plt.savefig(f"{out_dir}/boxplot_genero.png")
         plt.close()
-        print(f"✅ Boxplot por gênero salvo em: {out_dir}/boxplot_genero.png")
+        print(f" Boxplot por gênero salvo em: {out_dir}/boxplot_genero.png")
 
     # Extra 2: histograma de horas de estudo vs faixa de desempenho
     plt.figure(figsize=(8, 6))
@@ -365,7 +365,7 @@ def tarefa_5_visualizacao(df, corr_com_nota):
     plt.tight_layout()
     plt.savefig(f"{out_dir}/hist_estudo_por_desempenho.png")
     plt.close()
-    print(f"✅ Histograma salvo em: {out_dir}/hist_estudo_por_desempenho.png")
+    print(f" Histograma salvo em: {out_dir}/hist_estudo_por_desempenho.png")
 
     # Extra 3 (diferencial): mini-dashboard consolidando os principais gráficos
     fig, axes = plt.subplots(2, 2, figsize=(15, 11))
@@ -394,7 +394,7 @@ def tarefa_5_visualizacao(df, corr_com_nota):
     plt.tight_layout()
     plt.savefig(f"{out_dir}/dashboard_resumo.png")
     plt.close()
-    print(f"✅ Dashboard resumo (diferencial) salvo em: {out_dir}/dashboard_resumo.png")
+    print(f" Dashboard resumo (diferencial) salvo em: {out_dir}/dashboard_resumo.png")
 
 # ==============================================================================
 # TAREFA 6: SÍNTESE DE INSIGHTS
@@ -466,7 +466,7 @@ def tarefa_6_insights(df, corr_com_nota):
         f.write(texto)
 
     print(texto)
-    print(f"\n✅ Síntese completa salva em: {out_dir}/sintese_insights.md")
+    print(f"\n Síntese completa salva em: {out_dir}/sintese_insights.md")
     print("   (copie os trechos relevantes — com os números reais gerados na sua execução — para o README)")
 
 # ==============================================================================
@@ -490,7 +490,7 @@ def main():
     tarefa_6_insights(df_limpo, corr_com_nota)
 
     print("\n" + "="*70)
-    print("🚀 Pipeline executado com sucesso — Tarefas 1 a 6 concluídas!")
+    print(" Pipeline executado com sucesso — Tarefas 1 a 6 concluídas!")
     print("   Todos os artefatos (gráficos, CSVs e a síntese de insights) estão em 'outputs/'.")
     print("="*70 + "\n")
 
